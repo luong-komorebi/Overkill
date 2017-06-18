@@ -1,5 +1,6 @@
 package luongvo.com.everythingtraffic;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,7 +14,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -235,14 +240,22 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
+        getPopupInfo();
+    }
 
+    public void getPopupInfo() {
         contentView = LayoutInflater.from(this).inflate(R.layout.content, null);
         btnClick = (Button) contentView.findViewById(R.id.ClickToSeeMore);
 
         final OnInterInfoWindowTouchListener isClick = new OnInterInfoWindowTouchListener(btnClick) {
             @Override
             protected void onClickConfirmed(View v, Marker marker) {
-                Log.d("INFO WINDOW", "Clicked");
+                WebView webView = new WebView(MapsActivity2.this);
+                setContentView(webView);
+                Log.d(LOG_TAG, info.replace(" ", "+").replace(",", "%2C"));
+                webView.setWebChromeClient(new WebChromeClient());
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.loadUrl("https://www.google.com/search?q=" + info.replace(" ", "+").replace(",", "%2C"));
             }
         };
 
