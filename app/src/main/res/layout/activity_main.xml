@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/freeview"
-                    android:text="Free Map View"/>
+                    android:text="Find Place"/>
 
             </LinearLayout>
             <LinearLayout
@@ -65,7 +65,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Function 1"/>
+                    android:text="View Favorite"/>
 
                 <Button
                     android:layout_width="0dp"

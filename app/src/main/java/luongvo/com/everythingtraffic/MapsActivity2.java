@@ -2,12 +2,15 @@ package luongvo.com.everythingtraffic;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -250,12 +253,10 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         final OnInterInfoWindowTouchListener isClick = new OnInterInfoWindowTouchListener(btnClick) {
             @Override
             protected void onClickConfirmed(View v, Marker marker) {
-                WebView webView = new WebView(MapsActivity2.this);
-                setContentView(webView);
-                Log.d(LOG_TAG, info.replace(" ", "+").replace(",", "%2C"));
-                webView.setWebChromeClient(new WebChromeClient());
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl("https://www.google.com/search?q=" + info.replace(" ", "+").replace(",", "%2C"));
+                String url2Load = "https://www.google.com/search?q=" + info.replace(" ", "+").replace(",", "%2C");
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(MapsActivity2.this, Uri.parse(url2Load));
             }
         };
 
