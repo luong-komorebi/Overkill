@@ -2,12 +2,11 @@ package luongvo.com.everythingtraffic;
 
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,23 +16,24 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -42,37 +42,35 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import luongvo.com.everythingtraffic.Modules.DirectionFinderListener;
 import luongvo.com.everythingtraffic.Modules.MapWrapperLayout;
 import luongvo.com.everythingtraffic.Modules.OnInterInfoWindowTouchListener;
-import luongvo.com.everythingtraffic.Modules.Route;
 
-public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallback,DirectionFinderListener, LocationListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks  {
+
+public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks  {
 
     private static final LatLngBounds BOUNDS_HCMC = new LatLngBounds(new LatLng(10.500793, 106.379839),
             new LatLng(11.185964, 107.021166));
-
-
-    LocationManager locationManager;
-    String provider;
-
+    private FusedLocationProviderClient mFusedLocationClient;
     private static final String LOG_TAG = "Map2";
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     Button btnFind;
     private PlaceAutoCompleteAdapter mAdapter;
     private AutoCompleteTextView placeToGo;
-    protected LatLng latofPlace;
-    protected LatLng start;
-    View contentView;
-    Button btnClick;
+    private String info;
+    protected LatLng start = null;
 
     MapWrapperLayout mapWrapperLayout;
+    private View contentView;
+    private Button btnClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,25 +80,42 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
+        initComponent();
+    }
 
+    private void initComponent() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addConnectionCallbacks(this)
                 .enableAutoManage(this, this)
                 .addOnConnectionFailedListener(this)
                 .build();
-
         btnFind = (Button) findViewById(R.id.findPlace);
         placeToGo = (AutoCompleteTextView) findViewById(R.id.inputPlace);
         mAdapter = new PlaceAutoCompleteAdapter(this, android.R.layout.simple_list_item_1, mGoogleApiClient, BOUNDS_HCMC, null);
         placeToGo.setAdapter(mAdapter);
+        setAutoSuggestion();
+
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!placeToGo.getText().toString().equals("")) {
+                    moveToPosition();
+                    placeToGo.setText("");
+                }
+                else Toast.makeText(MapsActivity2.this, "Please input a place", Toast.LENGTH_SHORT).show();
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
 
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
 
+
+    }
+
+    private void setAutoSuggestion() {
         placeToGo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,7 +141,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                         // Get the Place object from the buffer.
                         final Place place = places.get(0);
 
-                        start=place.getLatLng();
+                        start = place.getLatLng();
+                        info = place.getName().toString() + ", " + place.getAddress().toString();
                     }
                 });
             }
@@ -149,19 +165,49 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
             }
         });
+    }
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    private void moveToPosition() {
+        // add a marker
+        LatLng wantToGoTo = start;
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(wantToGoTo).title(info)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.personstanding)));
 
-        provider = locationManager.getBestProvider(new Criteria(), false);
-
-        Location location = locationManager.getLastKnownLocation(provider);
-        if (location != null) {
-            onLocationChanged(location);
-        }
-
+        // create an animation for map while moving to this location
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(wantToGoTo)
+                .zoom(18)
+                .bearing(90)
+                .tilt(30)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
 
+    private void getCurPos () {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            start = new LatLng(location.getLatitude(), location.getLongitude());
+                            if (info == null)
+                                info = getAddress(MapsActivity2.this, location.getLatitude(), location.getLongitude());
+                            moveToPosition();
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MapsActivity2.this, "Check Your GPS or network", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
     /**
      * Manipulates the map once available.
@@ -182,27 +228,19 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         mMap = googleMap;
         mapWrapperLayout.init(mMap, this);
         mMap.setMyLocationEnabled(true);
+        getCurPos();
 
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                getCurPos();
+                return true;
+            }
+        });
 
-
-
-        // add a marker
-        /*LatLng newWorldHotel = new LatLng(10.7719712,106.6954345);
-        mMap.addMarker(new MarkerOptions().position(newWorldHotel).title("Location: New World Hotel")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.personstanding)));
-
-        // create an animation for map while moving to this location
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(newWorldHotel)
-                .zoom(18)
-                .bearing(90)
-                .tilt(30)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         contentView = LayoutInflater.from(this).inflate(R.layout.content, null);
-        btnClick = (Button) contentView.findViewById(R.id.Click);
+        btnClick = (Button) contentView.findViewById(R.id.ClickToSeeMore);
 
         final OnInterInfoWindowTouchListener isClick = new OnInterInfoWindowTouchListener(btnClick) {
             @Override
@@ -222,16 +260,31 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             public View getInfoContents(Marker marker) {
                 isClick.setMarker(marker);
                 TextView name = (TextView) contentView.findViewById(R.id.name);
-                TextView location = (TextView) contentView.findViewById(R.id.location);
                 name.setText(marker.getTitle());
-                location.setText(marker.getPosition().toString());
                 mapWrapperLayout.setMarkerWithInfoWindow(marker, contentView);
                 return contentView;
             }
 
-        });*/
+        });
     }
 
+    public String getAddress(Context context, double lat, double lng) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+
+            String add = obj.getAddressLine(0);
+            add = add + "," + obj.getAdminArea();
+            add = add + "," + obj.getCountryName();
+
+            return add;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
@@ -247,42 +300,6 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
     }
 
-    @Override
-    public void onDirectionFinderStart() {
 
-    }
 
-    @Override
-    public void onDirectionFinderSuccess(List<Route> route) {
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Double lat = location.getLatitude();
-        Double lng = location.getLongitude();
-
-        mMap.clear();
-
-        mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title("Your location"));
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 12));
-
-        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-        try {
-
-            List<Address> listAddresses = geocoder.getFromLocation(lat, lng, 1);
-
-            if (listAddresses != null && listAddresses.size() > 0) {
-
-                Log.i("PlaceInfo", listAddresses.get(0).toString());
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
