@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:text="Find"
             android:textColor="#ffffff"
-            android:background="#3f51b5"
+            android:background="#303f9f"
             android:id="@+id/findPlace"/>
     </LinearLayout>
     <luongvo.com.everythingtraffic.Modules.MapWrapperLayout

@@ -30,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -71,39 +72,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addConnectionCallbacks(this)
-                .enableAutoManage(this, this)
-                .addOnConnectionFailedListener(this)
-                .build();
-//        mGoogleApiClient.connect();
+        initComponent();
 
+        setUpAutoSuggestion();
 
-        btnFindPath = (ImageButton)findViewById(R.id.buttonFindPath);
-        starting = (AutoCompleteTextView) findViewById(R.id.start);
-        destination = (AutoCompleteTextView) findViewById(R.id.destination);
-        mAdapter = new PlaceAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
-                mGoogleApiClient, BOUNDS_HCMC, null);
-        starting.setAdapter(mAdapter);
-        destination.setAdapter(mAdapter);
-        btnFindPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendRequest();
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
 
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        });
-
-        /*
-        * Sets the start and destination points based on the values selected
-        * from the autocomplete text views.
-        * */
-
+    private void setUpAutoSuggestion() {
         starting.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -218,6 +193,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    private void initComponent() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .addOnConnectionFailedListener(this)
+                .build();
+//        mGoogleApiClient.connect();
+
+
+        btnFindPath = (ImageButton)findViewById(R.id.buttonFindPath);
+        starting = (AutoCompleteTextView) findViewById(R.id.start);
+        destination = (AutoCompleteTextView) findViewById(R.id.destination);
+        mAdapter = new PlaceAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
+                mGoogleApiClient, BOUNDS_HCMC, null);
+        starting.setAdapter(mAdapter);
+        destination.setAdapter(mAdapter);
+        btnFindPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendRequest();
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        });
+
+    }
 
 
     private void sendRequest() {
@@ -254,6 +259,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
+
+        // move to the center of Vietnam
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(10.7771649,106.6953986))
+                .zoom(18)
+                .bearing(90)
+                .tilt(30)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
     @Override

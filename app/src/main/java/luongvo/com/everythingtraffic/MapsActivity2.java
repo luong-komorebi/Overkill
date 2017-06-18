@@ -1,8 +1,5 @@
 package luongvo.com.everythingtraffic;
 
-
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;

@@ -32,6 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:background="@android:color/transparent"
                     android:hint="Choose a start point"
                     />
@@ -49,6 +50,7 @@
                     android:id="@+id/destination"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:background="@android:color/transparent"
                     android:hint="Choose a end point"
                     />
