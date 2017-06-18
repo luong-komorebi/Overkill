@@ -18,7 +18,7 @@
             android:layout_alignParentTop="true"
             android:id="@+id/info_title"
             android:textColor="#3f51b5"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:paddingBottom="5dp"/>
 
@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/info_title"
             android:id="@+id/info_body"
-            android:textSize="14sp"
+            android:textSize="12sp"
+            android:paddingBottom="5dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,18 +40,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@null"
+                android:background="#00B0FF"
                 android:src="@drawable/share"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
                 android:id="@+id/share_button"/>
             <ImageButton
                 android:src="@drawable/delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@null"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:background="#FF6E40"
                 android:id="@+id/delete_button"/>
 
         </LinearLayout>
+
 
     </RelativeLayout>
 

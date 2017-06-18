@@ -268,7 +268,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             protected void onClickConfirmed(View v, Marker marker) {
                 AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity2.this).create();
                 alertDialog.setTitle("Confirm Save Place");
-                alertDialog.setMessage("Press OK will save place to favorite list");
+                alertDialog.setMessage("Press OK will save place to favorite");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
