@@ -55,6 +55,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
         </activity>
+        <activity android:name=".DisplayFavList"></activity>
     </application>
 
 </manifest>

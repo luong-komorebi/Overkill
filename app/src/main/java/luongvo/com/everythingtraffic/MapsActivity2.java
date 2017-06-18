@@ -1,8 +1,8 @@
 package luongvo.com.everythingtraffic;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -12,16 +12,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -55,6 +52,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import luongvo.com.everythingtraffic.FavoritePlace.PlaceInfo;
 import luongvo.com.everythingtraffic.Modules.MapWrapperLayout;
 import luongvo.com.everythingtraffic.Modules.OnInterInfoWindowTouchListener;
 
@@ -68,6 +66,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     Button btnFind;
+    private PlaceInfo placeInfo;
     private PlaceAutoCompleteAdapter mAdapter;
     private AutoCompleteTextView placeToGo;
     private String info;
@@ -76,6 +75,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     MapWrapperLayout mapWrapperLayout;
     private View contentView;
     private Button btnClick;
+    private Button btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +148,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
                         start = place.getLatLng();
                         info = place.getName().toString() + ", " + place.getAddress().toString();
+
+                        placeInfo = new PlaceInfo(place.getName().toString(), place.getAddress().toString());
                     }
                 });
             }
@@ -249,6 +251,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     public void getPopupInfo() {
         contentView = LayoutInflater.from(this).inflate(R.layout.content, null);
         btnClick = (Button) contentView.findViewById(R.id.ClickToSeeMore);
+        btnSave = (Button) contentView.findViewById(R.id.ClickToSave);
 
         final OnInterInfoWindowTouchListener isClick = new OnInterInfoWindowTouchListener(btnClick) {
             @Override
@@ -260,7 +263,30 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             }
         };
 
+        final OnInterInfoWindowTouchListener isClick2 = new OnInterInfoWindowTouchListener(btnClick) {
+            @Override
+            protected void onClickConfirmed(View v, Marker marker) {
+                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity2.this).create();
+                alertDialog.setTitle("Confirm Save Place");
+                alertDialog.setMessage("Press OK will save place to favorite list");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        savePlaceToFavorite();
+                    }
+                });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }
+        };
+
         btnClick.setOnTouchListener(isClick);
+        btnSave.setOnTouchListener(isClick2);
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
@@ -277,6 +303,13 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             }
 
         });
+    }
+
+    private void savePlaceToFavorite() {
+        Intent intent = new Intent(this, DisplayFavList.class);
+        intent.putExtra("placeInfoObj", placeInfo);
+        startActivity(intent);
+
     }
 
     public String getAddress(Context context, double lat, double lng) {

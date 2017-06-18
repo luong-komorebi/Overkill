@@ -65,7 +65,7 @@
                 android:layout_width="65dp"
                 android:src="@drawable/searchicon"
                 android:scaleType="centerCrop"
-                android:background="@android:color/transparent"
+                android:background="@null"
                 android:layout_height="65dp"
                 android:contentDescription="Find path" />
 
