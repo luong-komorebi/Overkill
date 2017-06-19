@@ -92,5 +92,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button viewVietnamOffline = (Button) findViewById(R.id.viewVietnamOffline);
+        viewVietnamOffline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DisplayOfflineMap.class);
+                Bundle b = new Bundle();
+                b.putString("mapembed", "mapembed");
+                intent.putExtras(b);
+                startActivity(intent);
+            }
+        });
     }
 }

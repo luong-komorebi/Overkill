@@ -114,6 +114,15 @@ public class DisplayOfflineMap extends Activity implements GLMapView.ScreenCaptu
         mapView.setScaleRulerStyle(GLMapView.GLUnits.SI, GLMapView.GLMapPlacement.BottomCenter, new MapPoint(10, 10), 200);
         mapView.setAttributionPosition(GLMapView.GLMapPlacement.TopCenter);
         checkAndRequestLocationPermission();
+        Bundle b = getIntent().getExtras();
+        if (b!=null) {
+            String c = b.getString("mapembed");
+            if (!GLMapManager.AddMap(getAssets(), "49915.vm", null)) {
+                //Failed to unpack to caches. Check free space.
+            }
+            zoomToPoint();
+        }
+
 
         mapView.setCenterTileStateChangedCallback(new Runnable() {
             @Override
@@ -129,6 +138,22 @@ public class DisplayOfflineMap extends Activity implements GLMapView.ScreenCaptu
 
 
 
+    }
+
+    void zoomToPoint()
+    {
+        //New York
+        //MapPoint pt = new MapPoint(-74.0059700 , 40.7142700	);
+
+        //Belarus
+        //MapPoint pt = new MapPoint(27.56, 53.9);
+        //;
+
+        // Move map to the Montenegro capital
+        MapPoint pt = MapPoint.CreateFromGeoCoordinates(10.7771702,106.6932099);
+        GLMapView mapView = (GLMapView) this.findViewById(R.id.map_view);
+        mapView.setMapCenter(pt, false);
+        mapView.setMapZoom(16, false);
     }
 
     public void checkAndRequestLocationPermission()
