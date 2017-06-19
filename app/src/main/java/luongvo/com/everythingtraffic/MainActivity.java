@@ -5,7 +5,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;

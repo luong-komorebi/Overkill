@@ -1,8 +1,6 @@
 package luongvo.com.everythingtraffic.Modules;
 
-/**
- * Created by nptai95 on 4/25/2016.
- */
+
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;

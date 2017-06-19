@@ -1,8 +1,5 @@
 package luongvo.com.everythingtraffic.Modules;
 
-/**
- * Created by nptai95 on 4/25/2016.
- */
 
 import android.content.Context;
 import android.graphics.Point;

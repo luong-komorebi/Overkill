@@ -6,17 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
 import com.glmapview.GLMapDownloadTask;
-import com.glmapview.GLMapImage;
-import com.glmapview.GLMapImageGroup;
 import com.glmapview.GLMapInfo;
 import com.glmapview.GLMapLocaleSettings;
 import com.glmapview.GLMapManager;
@@ -24,8 +19,6 @@ import com.glmapview.GLMapMarkerLayer;
 import com.glmapview.GLMapView;
 import com.glmapview.MapPoint;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import luongvo.com.everythingtraffic.OfflineMap.DownloadMap;
