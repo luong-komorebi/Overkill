@@ -62,17 +62,18 @@ public class DisplayFavList extends AppCompatActivity {
         }
 
 
-        if (placeInfos != null) {
+        if (placeInfos == null || placeInfos.size() == 0) {
+            mRecyclerView.setVisibility(View.GONE);
+            notice.setVisibility(View.VISIBLE);
+            notice.setText("No item has been added here");
+        }
+        else {
             notice.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new PlaceFavAdapter(placeInfos, this);
             mRecyclerView.setAdapter(mAdapter);
         }
-        else {
-            mRecyclerView.setVisibility(View.GONE);
-            notice.setVisibility(View.VISIBLE);
-            notice.setText("No item has been added here");
-        }
+
 
     }
 

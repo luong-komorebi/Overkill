@@ -14,6 +14,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -148,8 +150,9 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
                         start = place.getLatLng();
                         info = place.getName().toString() + ", " + place.getAddress().toString();
-
-                        placeInfo = new PlaceInfo(place.getName().toString(), place.getAddress().toString());
+                        if (!info.equals("")) {
+                            placeInfo = new PlaceInfo(place.getName().toString(), place.getAddress().toString());
+                        }
                     }
                 });
             }
@@ -272,13 +275,14 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                         savePlaceToFavorite();
                     }
                 });
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        dialog.cancel();
                     }
                 });
                 alertDialog.show();
@@ -306,9 +310,36 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     }
 
     private void savePlaceToFavorite() {
-        Intent intent = new Intent(this, DisplayFavList.class);
-        intent.putExtra("placeInfoObj", placeInfo);
-        startActivity(intent);
+        if (placeInfo == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity2.this);
+            builder.setTitle("Input Name For Place");
+            final EditText input = new EditText(MapsActivity2.this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    placeInfo = new PlaceInfo(input.getText().toString(), info);
+                    Intent intent = new Intent(MapsActivity2.this, DisplayFavList.class);
+                    intent.putExtra("placeInfoObj", placeInfo);
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
+        else {
+            Intent intent = new Intent(this, DisplayFavList.class);
+            intent.putExtra("placeInfoObj", placeInfo);
+            startActivity(intent);
+        }
 
     }
 

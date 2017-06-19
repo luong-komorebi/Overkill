@@ -1,6 +1,7 @@
 package luongvo.com.everythingtraffic.FavoritePlace;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,17 @@ public class PlaceFavAdapter extends RecyclerView.Adapter<PlaceFavAdapter.Custom
                 notifyItemRemoved(pos);
                 notifyItemRangeChanged(pos, placeInfos.size());
                 ((DisplayFavList)context).saveArrayList();
+            }
+        });
+
+        holder.shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, placeInfo.getTitle() + ".\nAddress: " + placeInfo.getBody());
+                sendIntent.setType("text/plain");
+                context.startActivity(Intent.createChooser(sendIntent, "Share Location Via..."));
             }
         });
     }
