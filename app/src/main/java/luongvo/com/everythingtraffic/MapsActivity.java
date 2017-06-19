@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -37,18 +38,31 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.uber.sdk.android.rides.RideParameters;
+import com.uber.sdk.android.rides.RideRequestButton;
+import com.uber.sdk.android.rides.RideRequestButtonCallback;
+import com.uber.sdk.rides.client.ServerTokenSession;
+import com.uber.sdk.rides.client.SessionConfiguration;
+import com.uber.sdk.android.core.UberSdk;
+import com.uber.sdk.core.auth.Scope;
+import com.uber.sdk.rides.client.error.ApiError;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import luongvo.com.everythingtraffic.Modules.DirectionFinder;
 import luongvo.com.everythingtraffic.Modules.DirectionFinderListener;
 import luongvo.com.everythingtraffic.Modules.Route;
 
+
+
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks  {
     private static final String LOG_TAG = "MyActivity";
     private GoogleMap mMap;
     private ImageButton btnFindPath;
+    private RelativeLayout searchBar;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarker = new ArrayList<>();
     private List<Polyline> polyLinePaths = new ArrayList<>();
@@ -60,6 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private AutoCompleteTextView starting;
     private AutoCompleteTextView destination;
+    private RideRequestButton requestButton;
     protected LatLng start;
     protected LatLng end;
 
@@ -73,8 +88,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         initComponent();
-
         setUpAutoSuggestion();
+
+    }
+
+
+    private void setupUber() {
+        SessionConfiguration config = new SessionConfiguration.Builder()
+                .setClientId(getResources().getString(R.string.uber_client_id))
+                .setServerToken(getResources().getString(R.string.uber_server_token))
+                .setRedirectUri("luongvo://overkill")
+                .setScopes(Arrays.asList(Scope.RIDE_WIDGETS))
+                .setEnvironment(SessionConfiguration.Environment.SANDBOX)
+                .build();
+        UberSdk.initialize(config);
+
+
+        RideParameters rideParams = new RideParameters.Builder()
+                .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
+                .setPickupLocation(start.latitude, start.longitude, starting.getText().toString(), starting.getText().toString())
+                .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
+                .build();
+
+
+        ServerTokenSession session = new ServerTokenSession(config);
+
+
+        RideRequestButtonCallback callback = new RideRequestButtonCallback() {
+
+            @Override
+            public void onRideInformationLoaded() {
+                // react to the displayed estimates
+                requestButton.setVisibility(View.VISIBLE);
+                searchBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(ApiError apiError) {
+                // API error details: /docs/riders/references/api#section-errors
+                Toast.makeText(MapsActivity.this, apiError.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Unexpected error, very likely an IOException
+            }
+        };
+        requestButton.setRideParameters(rideParams);
+        requestButton.setSession(session);
+        requestButton.setCallback(callback);
+        requestButton.loadRideInformation();
 
     }
 
@@ -200,10 +263,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .enableAutoManage(this, this)
                 .addOnConnectionFailedListener(this)
                 .build();
-//        mGoogleApiClient.connect();
 
-
-        btnFindPath = (ImageButton)findViewById(R.id.buttonFindPath);
+        searchBar = (RelativeLayout) findViewById(R.id.searchBar);
+        requestButton = (RideRequestButton) findViewById(R.id.uberRequest);
+        btnFindPath = (ImageButton) findViewById(R.id.buttonFindPath);
         starting = (AutoCompleteTextView) findViewById(R.id.start);
         destination = (AutoCompleteTextView) findViewById(R.id.destination);
         mAdapter = new PlaceAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
@@ -217,10 +280,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                inputManager.hideSoftInputFromWindow(btnFindPath.getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+
             }
         });
+        requestButton.setVisibility(View.GONE);
+        searchBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -228,7 +294,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void sendRequest() {
         String originString = starting.getText().toString();
         String destinationString = destination.getText().toString();
-
+        Bundle b = getIntent().getExtras();
+        if (b != null)
+            setupUber();
         if (originString.isEmpty()) {
             Toast.makeText(this, "Please enter origin!", Toast.LENGTH_SHORT).show();
             return;
@@ -259,6 +327,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
+        mMap.setTrafficEnabled(true);
 
         // move to the center of Vietnam
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);

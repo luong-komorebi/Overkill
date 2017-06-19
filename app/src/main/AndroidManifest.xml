@@ -24,8 +24,18 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="www.luongvo.com"
+                    android:pathPrefix="/overkill" />
+
+                <data android:scheme="luongvo"
+                    android:host="overkill" />
             </intent-filter>
         </activity>
         <!--
@@ -49,6 +59,8 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
+
+
         </activity>
         <activity
             android:name=".MapsActivity2"
