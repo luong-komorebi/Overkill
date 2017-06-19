@@ -4,10 +4,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="6dp"
     android:layout_marginBottom="8dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="#ffebee">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
             android:id="@+id/info_title"
             android:textColor="#3f51b5"
             android:textSize="18sp"
+            android:maxLines="2"
             android:textStyle="bold"
             android:paddingBottom="5dp"/>
 
@@ -29,6 +31,7 @@
             android:id="@+id/info_body"
             android:textSize="12sp"
             android:paddingBottom="5dp"
+            android:maxLines="3"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,19 +43,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="#00B0FF"
-                android:src="@drawable/share"
+                android:background="#1a237e"
+                android:src="@drawable/ic_screen_share_white_24dp"
                 android:paddingTop="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:paddingBottom="2dp"
                 android:id="@+id/share_button"/>
             <ImageButton
-                android:src="@drawable/delete"
+                android:src="@drawable/ic_delete_white_24dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                android:background="#FF6E40"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="#bf360c"
                 android:id="@+id/delete_button"/>
 
         </LinearLayout>

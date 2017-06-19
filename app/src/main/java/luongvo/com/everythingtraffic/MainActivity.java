@@ -5,6 +5,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,6 +60,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initComponent() {
+        TextView appName = (TextView) findViewById(R.id.appName);
+        TextView appDescription = (TextView) findViewById(R.id.appDescription);
+
+
+        Typeface fontForName = Typeface.createFromAsset(getAssets(), "fonts/vnfintro.ttf");
+        appName.setTypeface(fontForName);
+
+        Typeface fontForDescription = Typeface.createFromAsset(getAssets(), "fonts/Cabin-Regular.ttf");
+        appDescription.setTypeface(fontForDescription);
+
+        Typeface fontForButton = Typeface.createFromAsset(getAssets(), "fonts/HelveticaNeue-Medium.otf");
+
         Button findRoute = (Button) findViewById(R.id.findRoute);
         findRoute.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        findRoute.setTypeface(fontForButton);
 
         Button freeMapView = (Button) findViewById(R.id.freeview);
         freeMapView.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        freeMapView.setTypeface(fontForButton);
 
         Button viewFavList = (Button) findViewById(R.id.viewFavList);
         viewFavList.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        viewFavList.setTypeface(fontForButton);
 
         Button viewOfflineMap = (Button) findViewById(R.id.offlineMap);
         viewOfflineMap.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        viewOfflineMap.setTypeface(fontForButton);
 
         Button viewVietnamOffline = (Button) findViewById(R.id.viewVietnamOffline);
         viewVietnamOffline.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        viewVietnamOffline.setTypeface(fontForButton);
 
         Button requestUber = (Button) findViewById(R.id.requestUber);
         requestUber.setOnClickListener(new View.OnClickListener() {
@@ -114,5 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        requestUber.setTypeface(fontForButton);
     }
 }

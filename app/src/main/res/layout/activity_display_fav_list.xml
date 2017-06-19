@@ -5,18 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#00cdfe"
     tools:context="luongvo.com.everythingtraffic.DisplayFavList">
     <Button
         android:layout_width="match_parent"
-        android:minHeight="20dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="#ffff00"
-        android:textColor="#000000"
-        android:textAllCaps="false"
         android:id="@+id/addMoreFavItem"
         android:text="Add more items"
-        android:textSize="20sp"
+        android:background="#fef73b"
+        android:textColor="#383c4a"
         android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
