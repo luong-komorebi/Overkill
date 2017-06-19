@@ -40,6 +40,7 @@ public class DisplayFavList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("My Favorite List");
         setContentView(R.layout.activity_display_fav_list);
         initComponent();
 
@@ -49,6 +50,9 @@ public class DisplayFavList extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.favListRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         TextView notice = (TextView) findViewById(R.id.emptyNotice);
+        Button addMoreFavItem = (Button) findViewById(R.id.addMoreFavItem);
+
+
         Intent intent = getIntent();
         Bundle intentExtra = intent.getExtras();
 
@@ -73,6 +77,15 @@ public class DisplayFavList extends AppCompatActivity {
             mAdapter = new PlaceFavAdapter(placeInfos, this);
             mRecyclerView.setAdapter(mAdapter);
         }
+
+
+        addMoreFavItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplayFavList.this, MapsActivity2.class);
+                startActivity(intent);
+            }
+        });
 
 
     }

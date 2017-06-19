@@ -57,8 +57,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
         </activity>
-        <activity android:name=".DisplayFavList" />
-        <activity android:name=".DisplayOfflineMap"></activity>
+        <activity android:name=".DisplayFavList">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="luongvo.com.everythingtraffic.MainActivity" />
+        </activity>
+        <activity android:name=".DisplayOfflineMap">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="luongvo.com.everythingtraffic.MainActivity" />
+        </activity>
         <activity android:name=".OfflineMap.DownloadMap"></activity>
     </application>
 

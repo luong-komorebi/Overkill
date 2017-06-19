@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/ClickToSeeMore"
             android:text="More Info"
+            android:textAllCaps="false"
             android:textColor="#ffffff"
             android:background="#3f51b5"/>
         <Button
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
+            android:textAllCaps="false"
             android:id="@+id/ClickToSave"
             android:text="Save"/>
     </LinearLayout>
