@@ -42,5 +42,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.uber.sdk:rides-android:0.5.3'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
+    compile 'com.github.apl-devs:appintro:v4.2.0'
     testCompile 'junit:junit:4.12'
 }

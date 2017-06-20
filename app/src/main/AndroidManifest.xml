@@ -22,6 +22,9 @@
         android:roundIcon="@mipmap/overkill_roundicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".IntroActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

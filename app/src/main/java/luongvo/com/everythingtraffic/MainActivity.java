@@ -5,11 +5,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int MYPERMISSION = 4111;
     private static final int reqCode = 4112;
+    Thread t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,38 @@ public class MainActivity extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkForPermission();
         initComponent();
+    }
+
+    private void checkFirstTimeRun() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //  Initialize SharedPreferences
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+
+                //  Create a new boolean and preference and set it to true
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+
+                //  If the activity has never started before...
+                if (isFirstStart) {
+
+                    //  Launch app intro
+                    Intent i = new Intent(MainActivity.this, IntroActivity.class);
+                    startActivity(i);
+
+                    //  Make a new preferences editor
+                    SharedPreferences.Editor e = getPrefs.edit();
+
+                    //  Edit preference to make it false because we don't want this to run again
+                    e.putBoolean("firstStart", false);
+
+                    //  Apply changes
+                    e.apply();
+                }
+            }
+        });
+        t.run();
     }
 
     private void checkInternetConnection() {
@@ -99,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initComponent() {
+        checkFirstTimeRun();
         TextView appName = (TextView) findViewById(R.id.appName);
         TextView appDescription = (TextView) findViewById(R.id.appDescription);
 

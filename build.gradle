@@ -16,6 +16,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'http://maven.getyourmap.com/artifactory/libs' }
+        maven { url 'https://jitpack.io' }
     }
 }
 
