@@ -29,12 +29,7 @@
         android:id="@+id/appDescription"
         android:text="One app for all transportation problems" />
 
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="220dp"-->
-        <!--android:scaleType="centerCrop"-->
-        <!--android:src="@drawable/traffic"-->
-        <!--android:layout_marginBottom="50dp"/>-->
+
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
         android:scaleType="centerCrop"
@@ -59,9 +54,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#303f9f"
+                    android:textColor="#f5f5f6"
                     android:layout_marginRight="5dp"
                     android:layout_marginLeft="5dp"
-                    android:textColor="#f5f5f6"
                     android:id="@+id/findRoute"
                     android:text="Find Route"/>
 

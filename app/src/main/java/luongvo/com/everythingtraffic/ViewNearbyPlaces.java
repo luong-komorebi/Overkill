@@ -86,6 +86,7 @@ public class ViewNearbyPlaces extends FragmentActivity implements LocationListen
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
+        mMap.setTrafficEnabled(true);
 
 
         Button btnGasStation = (Button) findViewById(R.id.btnGasStation);
@@ -93,13 +94,13 @@ public class ViewNearbyPlaces extends FragmentActivity implements LocationListen
             String GasStation = "gas_station";
             @Override
             public void onClick(View v) {
-                Log.d("onClick", "Button is Clicked");
+//                Log.d("onClick", "Button is Clicked");
                 mMap.clear();
                 String url = getUrl(latitude, longitude, GasStation);
                 Object[] DataTransfer = new Object[2];
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
-                Log.d("onClick", url);
+//                Log.d("onClick", url);
                 GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(getApplicationContext(),"Nearby Gas Stations", Toast.LENGTH_LONG).show();
@@ -111,13 +112,13 @@ public class ViewNearbyPlaces extends FragmentActivity implements LocationListen
             String Hospital = "hospital";
             @Override
             public void onClick(View v) {
-                Log.d("onClick", "Button is Clicked");
+//                Log.d("onClick", "Button is Clicked");
                 mMap.clear();
                 String url = getUrl(latitude, longitude, Hospital);
                 Object[] DataTransfer = new Object[2];
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
-                Log.d("onClick", url);
+//                Log.d("onClick", url);
                 GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(getApplicationContext(),"Nearby Hospitals", Toast.LENGTH_LONG).show();
@@ -129,7 +130,7 @@ public class ViewNearbyPlaces extends FragmentActivity implements LocationListen
             String BusStation = "bus_station";
             @Override
             public void onClick(View v) {
-                Log.d("onClick", "Button is Clicked");
+//                Log.d("onClick", "Button is Clicked");
                 mMap.clear();
                 if (mCurrLocationMarker != null) {
                     mCurrLocationMarker.remove();
@@ -138,10 +139,82 @@ public class ViewNearbyPlaces extends FragmentActivity implements LocationListen
                 Object[] DataTransfer = new Object[2];
                 DataTransfer[0] = mMap;
                 DataTransfer[1] = url;
-                Log.d("onClick", url);
+//                Log.d("onClick", url);
                 GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(getApplicationContext(),"Nearby Bus Stations", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button btnPolice = (Button) findViewById(R.id.btnPolice);
+        btnPolice.setOnClickListener(new View.OnClickListener() {
+            String police = "police";
+            @Override
+            public void onClick(View v) {
+//                Log.d("onClick", "Button is Clicked");
+                mMap.clear();
+                String url = getUrl(latitude, longitude, police);
+                Object[] DataTransfer = new Object[2];
+                DataTransfer[0] = mMap;
+                DataTransfer[1] = url;
+//                Log.d("onClick", url);
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+                getNearbyPlacesData.execute(DataTransfer);
+                Toast.makeText(getApplicationContext(),"Nearby Police Offices", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button btnCafe = (Button) findViewById(R.id.btnCafe);
+        btnCafe.setOnClickListener(new View.OnClickListener() {
+            String cafe = "cafe";
+            @Override
+            public void onClick(View v) {
+//                Log.d("onClick", "Button is Clicked");
+                mMap.clear();
+                String url = getUrl(latitude, longitude, cafe);
+                Object[] DataTransfer = new Object[2];
+                DataTransfer[0] = mMap;
+                DataTransfer[1] = url;
+//                Log.d("onClick", url);
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+                getNearbyPlacesData.execute(DataTransfer);
+                Toast.makeText(getApplicationContext(),"Nearby Coffee Shops", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button btnCarRepair = (Button) findViewById(R.id.btnCarRepair);
+        btnCarRepair.setOnClickListener(new View.OnClickListener() {
+            String carRepair = "car_repair";
+            @Override
+            public void onClick(View v) {
+//                Log.d("onClick", "Button is Clicked");
+                mMap.clear();
+                String url = getUrl(latitude, longitude, carRepair);
+                Object[] DataTransfer = new Object[2];
+                DataTransfer[0] = mMap;
+                DataTransfer[1] = url;
+//                Log.d("onClick", url);
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+                getNearbyPlacesData.execute(DataTransfer);
+                Toast.makeText(getApplicationContext(),"Nearby Car Repair", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Button btnCarWash = (Button) findViewById(R.id.btnCarWash);
+        btnCarWash.setOnClickListener(new View.OnClickListener() {
+            String carWash = "car_wash";
+            @Override
+            public void onClick(View v) {
+//                Log.d("onClick", "Button is Clicked");
+                mMap.clear();
+                String url = getUrl(latitude, longitude, carWash);
+                Object[] DataTransfer = new Object[2];
+                DataTransfer[0] = mMap;
+                DataTransfer[1] = url;
+//                Log.d("onClick", url);
+                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+                getNearbyPlacesData.execute(DataTransfer);
+                Toast.makeText(getApplicationContext(),"Nearby Car Wash", Toast.LENGTH_LONG).show();
             }
         });
     }

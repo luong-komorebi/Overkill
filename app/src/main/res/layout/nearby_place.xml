@@ -10,30 +10,107 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="luongvo.com.everythingtraffic.ViewNearbyPlaces" />
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="5dp"
+        android:scrollbarSize="10dp">
 
-        <Button
-            android:id="@+id/btnGasStation"
-            android:layout_width="wrap_content"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nearby Gas Stations" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btnHospital"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nearby Hospitals" />
+            <Button
+                android:id="@+id/btnGasStation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#303f9f"
+                android:textColor="#f5f5f6"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Gas Stations" />
 
-        <Button
-            android:id="@+id/btnBusStation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nearby Bus Stations" />
+            <Button
+                android:id="@+id/btnHospital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#fef73b"
+                android:textColor="#383c4a"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Hospitals" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnPolice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#303f9f"
+                android:textColor="#f5f5f6"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Police Office" />
+
+            <Button
+                android:id="@+id/btnCarRepair"
+                android:background="#fef73b"
+                android:textColor="#383c4a"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car Repair" />
+
+            <Button
+                android:id="@+id/btnCarWash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#303f9f"
+                android:textColor="#f5f5f6"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Car Wash" />
+
+            <Button
+                android:id="@+id/btnBusStation"
+                android:background="#fef73b"
+                android:textColor="#383c4a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="Bus Stations" />
+
+            <Button
+                android:id="@+id/btnCafe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="#303f9f"
+                android:textColor="#f5f5f6"
+                android:text="Cafe" />
+
+
+
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
 </FrameLayout>
