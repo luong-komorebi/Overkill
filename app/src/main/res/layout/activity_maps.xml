@@ -82,7 +82,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/uberRequest"
                 uber:ub__style="black" />
-
+            <com.uber.sdk.android.rides.RideRequestButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/uberRequest2"
+                android:layout_below="@id/uberRequest"
+                uber:ub__style="black" />
+            <com.uber.sdk.android.rides.RideRequestButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/uberRequest3"
+                android:layout_below="@id/uberRequest2"
+                uber:ub__style="black" />
 
         </RelativeLayout>
 

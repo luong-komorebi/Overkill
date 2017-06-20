@@ -21,22 +21,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                    android:host="www.luongvo.com"
-                    android:pathPrefix="/overkill" />
 
-                <data android:scheme="luongvo"
-                    android:host="overkill" />
+                <data
+                    android:host="www.luongvo.com"
+                    android:pathPrefix="/overkill"
+                    android:scheme="http" />
+                <data
+                    android:host="overkill"
+                    android:scheme="luongvo" />
             </intent-filter>
         </activity>
         <!--
@@ -56,12 +61,11 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
-
-
         </activity>
         <activity
             android:name=".MapsActivity2"
@@ -80,7 +84,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
         </activity>
-        <activity android:name=".OfflineMap.DownloadMap"></activity>
+        <activity android:name=".OfflineMap.DownloadMap" />
+        <activity
+            android:name=".ViewNearbyPlaces"
+            android:label="@string/title_activity_nearby_place">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="luongvo.com.everythingtraffic.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

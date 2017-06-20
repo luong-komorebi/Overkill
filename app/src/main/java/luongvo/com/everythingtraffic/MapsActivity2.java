@@ -360,6 +360,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             return null;
         }
     }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 

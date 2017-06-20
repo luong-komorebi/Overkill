@@ -133,6 +133,34 @@
                     android:text="Request Uber"/>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#fef73b"
+                    android:textColor="#383c4a"
+                    android:id="@+id/viewNearbyPlaces"
+                    android:text="Nearby Places"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/offlineMap"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#303f9f"
+                    android:textColor="#f5f5f6"
+                    android:text="World Offline Map"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -75,6 +75,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private AutoCompleteTextView starting;
     private AutoCompleteTextView destination;
     private RideRequestButton requestButton;
+    private RideRequestButton requestButton2;
+    private RideRequestButton requestButton3;
     protected LatLng start;
     protected LatLng end;
 
@@ -94,6 +96,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private void setupUber() {
+        if (start == null || end == null) {
+            Toast.makeText(this, "Address not accessible. Please choose from suggestion", Toast.LENGTH_SHORT).show();
+            return;
+        }
         SessionConfiguration config = new SessionConfiguration.Builder()
                 .setClientId(getResources().getString(R.string.uber_client_id))
                 .setServerToken(getResources().getString(R.string.uber_server_token))
@@ -105,6 +111,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         RideParameters rideParams = new RideParameters.Builder()
+                .setProductId("8d7386df-d99c-48fd-a628-ea65f859b0ab")
+                .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
+                .setPickupLocation(start.latitude, start.longitude, starting.getText().toString(), starting.getText().toString())
+                .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
+                .build();
+
+        RideParameters rideParams2 = new RideParameters.Builder()
+                .setProductId("cafb57ec-5157-4462-8453-09a7fc01f5d1")
+                .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
+                .setPickupLocation(start.latitude, start.longitude, starting.getText().toString(), starting.getText().toString())
+                .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
+                .build();
+
+        RideParameters rideParams3 = new RideParameters.Builder()
+                .setProductId("0b6b2de2-a6f3-4fa7-8385-414312f042ce")
                 .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
                 .setPickupLocation(start.latitude, start.longitude, starting.getText().toString(), starting.getText().toString())
                 .setDropoffLocation(end.latitude, end.longitude, destination.getText().toString(), destination.getText().toString())
@@ -134,10 +155,59 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Unexpected error, very likely an IOException
             }
         };
+        RideRequestButtonCallback callback2 = new RideRequestButtonCallback() {
+
+            @Override
+            public void onRideInformationLoaded() {
+                // react to the displayed estimates
+                requestButton2.setVisibility(View.VISIBLE);
+                searchBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(ApiError apiError) {
+                // API error details: /docs/riders/references/api#section-errors
+                Toast.makeText(MapsActivity.this, apiError.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Unexpected error, very likely an IOException
+            }
+        };
+        RideRequestButtonCallback callback3 = new RideRequestButtonCallback() {
+
+            @Override
+            public void onRideInformationLoaded() {
+                // react to the displayed estimates
+                requestButton3.setVisibility(View.VISIBLE);
+                searchBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(ApiError apiError) {
+                // API error details: /docs/riders/references/api#section-errors
+                Toast.makeText(MapsActivity.this, apiError.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                // Unexpected error, very likely an IOException
+            }
+        };
         requestButton.setRideParameters(rideParams);
+        requestButton2.setRideParameters(rideParams2);
+        requestButton3.setRideParameters(rideParams3);
         requestButton.setSession(session);
+        requestButton2.setSession(session);
+        requestButton3.setSession(session);
         requestButton.setCallback(callback);
+        requestButton2.setCallback(callback2);
+        requestButton3.setCallback(callback3);
         requestButton.loadRideInformation();
+        requestButton2.loadRideInformation();
+        requestButton3.loadRideInformation();
+
 
     }
 
@@ -266,6 +336,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         searchBar = (RelativeLayout) findViewById(R.id.searchBar);
         requestButton = (RideRequestButton) findViewById(R.id.uberRequest);
+        requestButton2 = (RideRequestButton) findViewById(R.id.uberRequest2);
+        requestButton3 = (RideRequestButton) findViewById(R.id.uberRequest3);
         btnFindPath = (ImageButton) findViewById(R.id.buttonFindPath);
         starting = (AutoCompleteTextView) findViewById(R.id.start);
         destination = (AutoCompleteTextView) findViewById(R.id.destination);
@@ -286,6 +358,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         requestButton.setVisibility(View.GONE);
+        requestButton2.setVisibility(View.GONE);
+        requestButton3.setVisibility(View.GONE);
         searchBar.setVisibility(View.VISIBLE);
 
     }

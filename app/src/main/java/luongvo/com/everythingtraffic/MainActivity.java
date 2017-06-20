@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -15,6 +16,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,8 +33,21 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null)
             actionBar.hide();
         setContentView(R.layout.activity_main);
-        checkForPermission();
+        checkGooglePlayService();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            checkForPermission();
         initComponent();
+    }
+
+    private void checkGooglePlayService() {
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int result = googleAPI.isGooglePlayServicesAvailable(this);
+        if(result != ConnectionResult.SUCCESS) {
+            if (googleAPI.isUserResolvableError(result)) {
+                googleAPI.getErrorDialog(this, result,
+                        0).show();
+            }
+        }
     }
 
     private void checkForPermission() {
@@ -62,16 +79,33 @@ public class MainActivity extends AppCompatActivity {
         TextView appName = (TextView) findViewById(R.id.appName);
         TextView appDescription = (TextView) findViewById(R.id.appDescription);
 
+        Button findRoute = (Button) findViewById(R.id.findRoute);
+        Button freeMapView = (Button) findViewById(R.id.freeview);
+        Button viewFavList = (Button) findViewById(R.id.viewFavList);
+        Button viewOfflineMap = (Button) findViewById(R.id.offlineMap);
+        Button viewVietnamOffline = (Button) findViewById(R.id.viewVietnamOffline);
+        Button requestUber = (Button) findViewById(R.id.requestUber);
+        Button viewNearByPlaces = (Button) findViewById(R.id.viewNearbyPlaces);
+
 
         Typeface fontForName = Typeface.createFromAsset(getAssets(), "fonts/vnfintro.ttf");
-        appName.setTypeface(fontForName);
-
         Typeface fontForDescription = Typeface.createFromAsset(getAssets(), "fonts/Cabin-Regular.ttf");
-        appDescription.setTypeface(fontForDescription);
-
         Typeface fontForButton = Typeface.createFromAsset(getAssets(), "fonts/HelveticaNeue-Medium.otf");
 
-        Button findRoute = (Button) findViewById(R.id.findRoute);
+
+
+        appName.setTypeface(fontForName);
+        appDescription.setTypeface(fontForDescription);
+
+        findRoute.setTypeface(fontForButton);
+        freeMapView.setTypeface(fontForButton);
+        viewFavList.setTypeface(fontForButton);
+        viewOfflineMap.setTypeface(fontForButton);
+        viewVietnamOffline.setTypeface(fontForButton);
+        requestUber.setTypeface(fontForButton);
+        viewNearByPlaces.setTypeface(fontForButton);
+
+
         findRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        findRoute.setTypeface(fontForButton);
 
-        Button freeMapView = (Button) findViewById(R.id.freeview);
+
+
         freeMapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        freeMapView.setTypeface(fontForButton);
 
-        Button viewFavList = (Button) findViewById(R.id.viewFavList);
+
+
         viewFavList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,9 +133,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        viewFavList.setTypeface(fontForButton);
 
-        Button viewOfflineMap = (Button) findViewById(R.id.offlineMap);
+
+
         viewOfflineMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        viewOfflineMap.setTypeface(fontForButton);
 
-        Button viewVietnamOffline = (Button) findViewById(R.id.viewVietnamOffline);
+
+
         viewVietnamOffline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,9 +156,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        viewVietnamOffline.setTypeface(fontForButton);
 
-        Button requestUber = (Button) findViewById(R.id.requestUber);
+
+
         requestUber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +167,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        requestUber.setTypeface(fontForButton);
+
+
+
+        viewNearByPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ViewNearbyPlaces.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
