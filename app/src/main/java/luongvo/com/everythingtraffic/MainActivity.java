@@ -2,10 +2,13 @@ package luongvo.com.everythingtraffic;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -33,10 +36,29 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null)
             actionBar.hide();
         setContentView(R.layout.activity_main);
+        checkInternetConnection();
         checkGooglePlayService();
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkForPermission();
         initComponent();
+    }
+
+    private void checkInternetConnection() {
+        ConnectivityManager  cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if ( netInfo == null || !netInfo.isConnectedOrConnecting() ) {
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Warning");
+            alertDialog.setMessage("This app has limited functions without the internet connection.");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
     }
 
     private void checkGooglePlayService() {
@@ -56,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
     }
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MYPERMISSION) {
