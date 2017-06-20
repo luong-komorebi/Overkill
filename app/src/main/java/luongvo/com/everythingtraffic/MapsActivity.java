@@ -3,7 +3,9 @@ package luongvo.com.everythingtraffic;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -79,6 +82,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private RideRequestButton requestButton3;
     protected LatLng start;
     protected LatLng end;
+    private Button buttonMaiLinh;
+    private Button buttonVinaSun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +102,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void setupUber() {
         if (start == null || end == null) {
-            Toast.makeText(this, "Address not accessible. Please choose from suggestion", Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(this, "Address not accessible. Please redo and choose from suggestion", Toast.LENGTH_SHORT).show();
+            finish();
         }
+        searchBar.setVisibility(View.GONE);
         SessionConfiguration config = new SessionConfiguration.Builder()
                 .setClientId(getResources().getString(R.string.uber_client_id))
                 .setServerToken(getResources().getString(R.string.uber_server_token))
@@ -134,14 +140,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         ServerTokenSession session = new ServerTokenSession(config);
 
-
         RideRequestButtonCallback callback = new RideRequestButtonCallback() {
 
             @Override
             public void onRideInformationLoaded() {
                 // react to the displayed estimates
                 requestButton.setVisibility(View.VISIBLE);
-                searchBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -161,7 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onRideInformationLoaded() {
                 // react to the displayed estimates
                 requestButton2.setVisibility(View.VISIBLE);
-                searchBar.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -181,7 +185,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onRideInformationLoaded() {
                 // react to the displayed estimates
                 requestButton3.setVisibility(View.VISIBLE);
-                searchBar.setVisibility(View.GONE);
+
             }
 
             @Override
@@ -207,6 +211,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         requestButton.loadRideInformation();
         requestButton2.loadRideInformation();
         requestButton3.loadRideInformation();
+        buttonMaiLinh.setVisibility(View.VISIBLE);
+        buttonVinaSun.setVisibility(View.VISIBLE);
 
 
     }
@@ -335,12 +341,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
 
         searchBar = (RelativeLayout) findViewById(R.id.searchBar);
+
         requestButton = (RideRequestButton) findViewById(R.id.uberRequest);
         requestButton2 = (RideRequestButton) findViewById(R.id.uberRequest2);
         requestButton3 = (RideRequestButton) findViewById(R.id.uberRequest3);
+        buttonMaiLinh = (Button) findViewById(R.id.btnMaiLinh);
+        buttonVinaSun = (Button) findViewById(R.id.btnVinasun);
         btnFindPath = (ImageButton) findViewById(R.id.buttonFindPath);
+
         starting = (AutoCompleteTextView) findViewById(R.id.start);
         destination = (AutoCompleteTextView) findViewById(R.id.destination);
+
         mAdapter = new PlaceAutoCompleteAdapter(this, android.R.layout.simple_list_item_1,
                 mGoogleApiClient, BOUNDS_HCMC, null);
         starting.setAdapter(mAdapter);
@@ -357,9 +368,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
+        buttonMaiLinh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:02838383838"));
+                startActivity(intent);
+            }
+        });
+
+        buttonVinaSun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:02838277178"));
+                startActivity(intent);
+            }
+        });
+
         requestButton.setVisibility(View.GONE);
         requestButton2.setVisibility(View.GONE);
         requestButton3.setVisibility(View.GONE);
+        buttonMaiLinh.setVisibility(View.GONE);
+        buttonVinaSun.setVisibility(View.GONE);
+
+
         searchBar.setVisibility(View.VISIBLE);
 
     }

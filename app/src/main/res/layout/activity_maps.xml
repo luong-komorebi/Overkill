@@ -95,6 +95,42 @@
                 android:layout_below="@id/uberRequest2"
                 uber:ub__style="black" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/uberRequest3">
+
+                <Button
+                    android:id="@+id/btnMaiLinh"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#303f9f"
+                    android:textColor="#f5f5f6"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Mai Linh taxi" />
+
+                <Button
+                    android:id="@+id/btnVinasun"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#fef73b"
+                    android:textColor="#383c4a"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Vinasun taxi" />
+            </LinearLayout>
+
+
+
         </RelativeLayout>
 
 

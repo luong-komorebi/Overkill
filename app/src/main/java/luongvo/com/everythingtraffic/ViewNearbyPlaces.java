@@ -290,4 +290,10 @@ public class ViewNearbyPlaces extends FragmentActivity implements LocationListen
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected())
+            mGoogleApiClient.disconnect();
+    }
 }
