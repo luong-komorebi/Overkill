@@ -327,7 +327,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void initComponent() {
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addConnectionCallbacks(this)
                 .enableAutoManage(this, this)
@@ -482,5 +482,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // stop GoogleApiClient
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 }

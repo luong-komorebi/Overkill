@@ -23,7 +23,7 @@ public class IntroActivity extends AppIntro2 {
         addSlide(AppIntro2Fragment.newInstance("Welcome to Overkill...", "Your one stop for all transportation problems", R.drawable.school_bus, Color.parseColor("#303f9f")));
         addSlide(AppIntro2Fragment.newInstance("Never get lost again", "Find locations, nearby services and routes quickly", R.drawable.find_location, Color.parseColor("#e91e63")));
         addSlide(AppIntro2Fragment.newInstance("Forget no place", "Save your favorite places with customizable favorite lists", R.drawable.saveaplace, Color.parseColor("#827717")));
-        addSlide(AppIntro2Fragment.newInstance("Words out now", "Share your favorite places to friends", R.drawable.adventuretime, Color.parseColor("#311b92")));
+        addSlide(AppIntro2Fragment.newInstance("Words out now", "Share your favorite places and photos to friends", R.drawable.adventuretime, Color.parseColor("#311b92")));
         addSlide(AppIntro2Fragment.newInstance("No wifi no worry", "View offline map when out of data", R.drawable.light_bulb, Color.parseColor("#212121")));
         addSlide(AppIntro2Fragment.newInstance("Wait no more!!", "Explore now", R.drawable.explore_now, Color.parseColor("#3949ab")));
 

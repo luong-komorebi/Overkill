@@ -2,22 +2,29 @@ package luongvo.com.everythingtraffic;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,10 +32,20 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int MYPERMISSION = 4111;
     private static final int reqCode = 4112;
+    private static final int CAMERA_INTENT = 4113;
+    private static final int GALLERY_INTENT = 4114;
+    String mCurrentPhotoPath;
     Thread t;
 
     @Override
@@ -134,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initComponent() {
+
         checkFirstTimeRun();
         TextView appName = (TextView) findViewById(R.id.appName);
         TextView appDescription = (TextView) findViewById(R.id.appDescription);
@@ -145,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         Button viewVietnamOffline = (Button) findViewById(R.id.viewVietnamOffline);
         Button requestUber = (Button) findViewById(R.id.requestUber);
         Button viewNearByPlaces = (Button) findViewById(R.id.viewNearbyPlaces);
+        Button sharePhoto = (Button) findViewById(R.id.sharePhoto);
 
 
         Typeface fontForName = Typeface.createFromAsset(getAssets(), "fonts/vnfintro.ttf");
@@ -163,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
         viewVietnamOffline.setTypeface(fontForButton);
         requestUber.setTypeface(fontForButton);
         viewNearByPlaces.setTypeface(fontForButton);
+        sharePhoto.setTypeface(fontForButton);
 
 
         findRoute.setOnClickListener(new View.OnClickListener() {
@@ -237,5 +257,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        sharePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence[] optionsCamera = new CharSequence[] {"Take photo", "Choose from library"};
+                AlertDialog.Builder chooseAction = new AlertDialog.Builder(MainActivity.this);
+                chooseAction.setTitle("Share photo with...");
+                chooseAction.setItems(optionsCamera, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if (intent.resolveActivity(getPackageManager()) != null) {
+                                startActivityForResult(intent, CAMERA_INTENT);
+                            }
+                        }
+                        else {
+                            Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent,"Select Picture"), GALLERY_INTENT);
+                        }
+                    }
+                });
+
+                chooseAction.show();
+
+            }
+        });
+
+
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ( requestCode == GALLERY_INTENT && resultCode == Activity.RESULT_OK) {
+//            Bitmap photoTaken = (Bitmap) data.getExtras().get("data");
+            Uri uri = data.getData();
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/*");
+            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+        }
+        if (requestCode == CAMERA_INTENT  && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), imageBitmap, "TempFile", null);
+            Uri uri = Uri.parse(path);
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/*");
+            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+        }
+    }
+
 }
