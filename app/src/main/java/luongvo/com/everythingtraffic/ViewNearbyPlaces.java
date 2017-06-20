@@ -39,7 +39,7 @@ public class ViewNearbyPlaces extends FragmentActivity implements LocationListen
     private GoogleMap mMap;
     double latitude;
     double longitude;
-    private int PROXIMITY_RADIUS = 5000;
+    private int PROXIMITY_RADIUS = 10000;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
