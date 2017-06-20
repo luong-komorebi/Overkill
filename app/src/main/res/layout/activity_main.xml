@@ -125,7 +125,7 @@
                     android:background="#fef73b"
                     android:textColor="#383c4a"
                     android:id="@+id/requestUber"
-                    android:text="Request Uber"/>
+                    android:text="Request Taxi"/>
 
             </LinearLayout>
             <LinearLayout
