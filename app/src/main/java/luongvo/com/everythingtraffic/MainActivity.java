@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_INTENT = 4113;
     private static final int GALLERY_INTENT = 4114;
     String mCurrentPhotoPath;
-    Thread t;
+    Uri photoURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -269,7 +269,20 @@ public class MainActivity extends AppCompatActivity {
                         if (which == 0) {
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             if (intent.resolveActivity(getPackageManager()) != null) {
-                                startActivityForResult(intent, CAMERA_INTENT);
+                                File photoFile = null;
+                                try {
+                                    photoFile = createImageFile();
+                                } catch (IOException ex) {
+                                    // Error occurred while creating the File
+                                }
+                                // Continue only if the File was successfully created
+                                if (photoFile != null) {
+                                    photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                                            "luongvo.com.everythingtraffic.fileprovider",
+                                            photoFile);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                                    startActivityForResult(intent, CAMERA_INTENT);
+                                }
                             }
                         }
                         else {
@@ -302,17 +315,27 @@ public class MainActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(shareIntent, "Share Image"));
         }
         if (requestCode == CAMERA_INTENT  && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), imageBitmap, "TempFile", null);
-            Uri uri = Uri.parse(path);
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
             shareIntent.setType("image/*");
             startActivity(Intent.createChooser(shareIntent, "Share Image"));
         }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
 }
