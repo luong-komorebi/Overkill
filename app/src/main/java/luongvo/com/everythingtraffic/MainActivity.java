@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         Button viewNearByPlaces = (Button) findViewById(R.id.viewNearbyPlaces);
         Button sharePhoto = (Button) findViewById(R.id.sharePhoto);
         Button findBusRoute = (Button) findViewById(R.id.findBusRoute);
+        Button viewBusInfo = (Button) findViewById(R.id.viewBusInfo);
 
 
         Typeface fontForName = Typeface.createFromAsset(getAssets(), "fonts/vnfintro.ttf");
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         viewNearByPlaces.setTypeface(fontForButton);
         sharePhoto.setTypeface(fontForButton);
         findBusRoute.setTypeface(fontForButton);
+        viewBusInfo.setTypeface(fontForButton);
 
 
         findRoute.setOnClickListener(new View.OnClickListener() {
@@ -328,6 +330,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 alertDialog.show();
+            }
+        });
+
+        viewBusInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), BusInfoActivity.class);
+                startActivity(intent);
             }
         });
 

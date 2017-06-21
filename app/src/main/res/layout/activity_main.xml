@@ -170,7 +170,7 @@
                     android:background="#303f9f"
                     android:textColor="#f5f5f6"
                     android:id="@+id/findBusRoute"
-                    android:text="Find Bus"/>
+                    android:text="Find Bus Route"/>
 
                 <Button
                     android:layout_width="0dp"
@@ -180,8 +180,8 @@
                     android:layout_marginLeft="5dp"
                     android:background="#fef73b"
                     android:textColor="#383c4a"
-                    android:id="@+id/requestUber"
-                    android:text="Request Taxi"/>
+                    android:id="@+id/viewBusInfo"
+                    android:text="View Bus Info"/>
 
             </LinearLayout>
 

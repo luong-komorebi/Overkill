@@ -29,7 +29,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
@@ -112,6 +112,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
         </activity>
+        <activity android:name=".BusInfoActivity"></activity>
     </application>
 
 </manifest>
