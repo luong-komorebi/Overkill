@@ -156,6 +156,34 @@
                     android:text="Share Photos"/>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#303f9f"
+                    android:textColor="#f5f5f6"
+                    android:id="@+id/findBusRoute"
+                    android:text="Find Bus"/>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#fef73b"
+                    android:textColor="#383c4a"
+                    android:id="@+id/requestUber"
+                    android:text="Request Taxi"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

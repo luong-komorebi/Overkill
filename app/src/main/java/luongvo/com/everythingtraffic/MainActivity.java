@@ -24,9 +24,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -162,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         Button requestUber = (Button) findViewById(R.id.requestUber);
         Button viewNearByPlaces = (Button) findViewById(R.id.viewNearbyPlaces);
         Button sharePhoto = (Button) findViewById(R.id.sharePhoto);
+        Button findBusRoute = (Button) findViewById(R.id.findBusRoute);
 
 
         Typeface fontForName = Typeface.createFromAsset(getAssets(), "fonts/vnfintro.ttf");
@@ -181,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         requestUber.setTypeface(fontForButton);
         viewNearByPlaces.setTypeface(fontForButton);
         sharePhoto.setTypeface(fontForButton);
+        findBusRoute.setTypeface(fontForButton);
 
 
         findRoute.setOnClickListener(new View.OnClickListener() {
@@ -294,6 +303,31 @@ public class MainActivity extends AppCompatActivity {
 
                 chooseAction.show();
 
+            }
+        });
+
+
+        findBusRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("no", "this is clicked");
+                final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Warning");
+                alertDialog.setMessage("This will not work without internet access");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MainActivity.this, FindBus.class);
+                        startActivity(intent);
+                    }
+                });
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.cancel();
+                    }
+                });
+                alertDialog.show();
             }
         });
 

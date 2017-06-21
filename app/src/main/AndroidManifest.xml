@@ -29,12 +29,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths">
-            </meta-data>
+                android:resource="@xml/file_paths"></meta-data>
         </provider>
-        <activity android:name=".IntroActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".IntroActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -102,6 +103,11 @@
         <activity
             android:name=".ViewNearbyPlaces"
             android:label="@string/title_activity_nearby_place">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="luongvo.com.everythingtraffic.MainActivity" />
+        </activity>
+        <activity android:name=".FindBus">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
