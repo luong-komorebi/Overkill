@@ -107,7 +107,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
         </activity>
-        <activity android:name=".FindBus">
+        <activity android:name=".FindBus"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
