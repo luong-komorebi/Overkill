@@ -41,7 +41,6 @@ public class BusDataAdapter extends ArrayAdapter<routeInfo> {
 //            LayoutInflater layoutInflater = ((Activity) this.context).getLayoutInflater();
 //            convertView = layoutInflater.inflate(resourceID, parent, false);
             convertView = LayoutInflater.from(this.context).inflate(resourceID, parent, false);
-            return convertView;
         }
 
         routeInfo routeInfoItem = routeInfos.get(position);

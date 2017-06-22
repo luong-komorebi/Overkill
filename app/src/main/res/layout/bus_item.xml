@@ -17,14 +17,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="#FF0000"
+            android:textSize="20sp"
+            android:textColor="#303f9f"
             android:text="text"
+            android:textStyle="bold"
             android:id="@+id/busName"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:text="text"
             android:id="@+id/busRoute"/>
     </LinearLayout>

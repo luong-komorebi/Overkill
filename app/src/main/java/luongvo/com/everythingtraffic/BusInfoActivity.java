@@ -39,13 +39,7 @@ public class BusInfoActivity extends AppCompatActivity{
 
         loadData();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                routeInfo item = routeInfoList.get(position);
-                // work to be done here
-            }
-        });
+
 
     }
 
@@ -97,6 +91,13 @@ public class BusInfoActivity extends AppCompatActivity{
 //                txtPostList.setText(postList);
                 busDataAdapter = new BusDataAdapter(BusInfoActivity.this, R.layout.bus_item, routeInfoList);
                 listView.setAdapter(busDataAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        routeInfo item = routeInfoList.get(position);
+                        // work to be done here
+                    }
+                });
                 progressDialog.dismiss();
             }
         }.execute();
