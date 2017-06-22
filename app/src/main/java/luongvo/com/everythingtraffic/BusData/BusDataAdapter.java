@@ -55,6 +55,6 @@ public class BusDataAdapter extends ArrayAdapter<routeInfo> {
 
 
 
-        }
+
     }
 }
