@@ -1,11 +1,15 @@
 package luongvo.com.everythingtraffic;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -22,14 +26,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import luongvo.com.everythingtraffic.BusData.BusDataAdapter;
+import luongvo.com.everythingtraffic.BusData.BusDataDetail;
 import luongvo.com.everythingtraffic.BusData.routeInfo;
 
 public class BusInfoActivity extends AppCompatActivity{
 
     private ProgressDialog progressDialog;
-    private TextView txtPostList;
     private ArrayList<routeInfo> routeInfoList;
-    private StringBuffer postList;
     private ListView listView;
     BusDataAdapter busDataAdapter;
     private EditText typeToSearch;
@@ -39,7 +42,7 @@ public class BusInfoActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus_info);
         initComponent();
-       // txtPostList=(TextView)findViewById(R.id.txtPostList);
+
 
         loadData();
 
@@ -63,36 +66,12 @@ public class BusInfoActivity extends AppCompatActivity{
             protected Void doInBackground(Void... params) {
                 Type listType = new TypeToken<ArrayList<routeInfo>>(){}.getType();
                 routeInfoList = new GsonBuilder().create().fromJson(readJsonFromAssets(), listType);
-//                postList = new StringBuffer();
-//                for (routeInfo routeInfo : routeInfoList) {
-//                    postList.append("\n-----------" +
-//                            "\nXe số : " +routeInfo.getRouteNo() +
-//                            "\nTuyến :" + routeInfo.getRouteName() +
-//                            "\nLoại :" + routeInfo.getType() +
-//                            "\nTổng cự ly hành trình :" + routeInfo.getDistance() +
-//                            "\nĐơn vị chủ quản :" + routeInfo.getOrgs() +
-//                            "\nTổng thời gian đi :" + routeInfo.getTimeOfTrip() +
-//                            "\nKhoảng đợi giữa 2 tuyến liên tiếp :" + routeInfo.getHeadway() +
-//                            "\nThời gian hoạt động :" + routeInfo.getOperationTime() +
-//                            "\nSố chỗ ngồi :" + routeInfo.getNumOfSeats() +
-//                            "\nXuất Phát tại :" + routeInfo.getOutBoundName() +
-//                            "\nKết Thúc tại :" + routeInfo.getInBoundName() +
-//                            "\nLộ Trình lượt đi :" + routeInfo.getOutBoundDescription() +
-//                            "\nLộ Trình lượt về :" + routeInfo.getInBoundDescription() +
-//                            "\nTổng số chuyến :" + routeInfo.getTotalTrip() +
-//                            "\nGiá vé thường :" + routeInfo.getNormalTicket() +
-//                            "\nGiá vé sinh viên :" + routeInfo.getStudentTicket() +
-//                            "\nGiá vé tháng :" + routeInfo.getMonthlyTicket()
-//                    );
-//                }
-
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-//                txtPostList.setText(postList);
                 busDataAdapter = new BusDataAdapter(BusInfoActivity.this, R.layout.bus_item, routeInfoList);
                 listView.setAdapter(busDataAdapter);
                 progressDialog.dismiss();
@@ -105,6 +84,7 @@ public class BusInfoActivity extends AppCompatActivity{
     private void initComponent() {
         listView = (ListView) findViewById(R.id.listOfBus);
         typeToSearch = (EditText) findViewById(R.id.typeToSearch);
+
 
         typeToSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -126,8 +106,10 @@ public class BusInfoActivity extends AppCompatActivity{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                routeInfo item = routeInfoList.get(position);
-                // work to be done here
+                routeInfo item = busDataAdapter.getItem(position);
+                Intent intent = new Intent(BusInfoActivity.this, BusDataDetail.class);
+                intent.putExtra("routeInfoItem", item);
+                startActivity(intent);
             }
         });
     }

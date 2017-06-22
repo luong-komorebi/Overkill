@@ -52,7 +52,7 @@ public class BusDataAdapter extends ArrayAdapter<routeInfo> {
         TextView busRoute = (TextView) convertView.findViewById(R.id.busRoute);
         routeInfo routeInfoItem = routeInfos.get(position);
 
-        busName.setText("Xe số : " + routeInfoItem.getRouteId());
+        busName.setText(routeInfoItem.getRouteId() + ". Xe số : " + routeInfoItem.getRouteNo());
         busRoute.setText(routeInfoItem.getRouteName());
         return convertView;
     }
@@ -77,7 +77,7 @@ public class BusDataAdapter extends ArrayAdapter<routeInfo> {
                     constraint = constraint.toString().toLowerCase();
                     for (int i = 0; i < searchRouteInfos.size(); i++) {
                         String data = "Xe số " + searchRouteInfos.get(i).getRouteId();
-                        if (data.toLowerCase().startsWith(constraint.toString())) {
+                        if (data.toLowerCase().contains(constraint.toString())) {
                             filteredRouteInfos.add(searchRouteInfos.get(i));
                         }
                     }
@@ -102,4 +102,9 @@ public class BusDataAdapter extends ArrayAdapter<routeInfo> {
         return routeInfos.size();
     }
 
+    @Nullable
+    @Override
+    public routeInfo getItem(int position) {
+        return routeInfos.get(position);
+    }
 }

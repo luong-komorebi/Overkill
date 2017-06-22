@@ -107,13 +107,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
         </activity>
-        <activity android:name=".FindBus"
-            android:windowSoftInputMode="stateHidden">
+        <activity android:name=".FindBus">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="luongvo.com.everythingtraffic.MainActivity" />
         </activity>
-        <activity android:name=".BusInfoActivity"></activity>
+        <activity android:name=".BusInfoActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="luongvo.com.everythingtraffic.MainActivity" />
+        </activity>
+        <activity
+            android:name="luongvo.com.everythingtraffic.BusData.BusDataDetail"
+            android:label="Bus Detail"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="luongvo.com.everythingtraffic.BusInfoActivity" />
+        </activity>
     </application>
 
 </manifest>

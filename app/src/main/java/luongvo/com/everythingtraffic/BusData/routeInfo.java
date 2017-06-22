@@ -6,7 +6,9 @@ package luongvo.com.everythingtraffic.BusData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class routeInfo {
+import java.io.Serializable;
+
+public class routeInfo implements Serializable {
 
     @SerializedName("RouteId")
     @Expose
